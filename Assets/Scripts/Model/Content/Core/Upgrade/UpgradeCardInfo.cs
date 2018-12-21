@@ -23,6 +23,7 @@ namespace Upgrade
         public List<Type> AbilityTypes { get; private set; }
         public int Charges { get; private set; }
         public bool RegensCharges { get; private set; }
+        public bool CannotBeRecharged { get; private set; }
         public int SEImageNumber { get; private set; }
         public UpgradeCardRestrictions Restrictions { get; private set; }
         public SpecialWeaponInfo WeaponInfo { get; private set; }
@@ -48,6 +49,7 @@ namespace Upgrade
             UpgradeCardRestrictions restrictions = null,
             int charges = 0,
             bool regensCharges = false,
+            bool cannotBeRecharged = false,
             int seImageNumber = 0,
             SpecialWeaponInfo weaponInfo = null,
             ShipArcInfo addArc = null,
@@ -68,6 +70,7 @@ namespace Upgrade
             Cost = cost;
             Charges = charges;
             RegensCharges = regensCharges;
+            CannotBeRecharged = cannotBeRecharged;
             SEImageNumber = seImageNumber;
             WeaponInfo = weaponInfo;
             AddAction = addAction;
@@ -167,7 +170,7 @@ namespace Upgrade
         {
             if (AddAction != null)
             {
-                HostShip.ShipInfo.ActionIcons.AddActions(new ActionInfo(AddAction.ActionType, AddAction.Color));
+                HostShip.ShipInfo.ActionIcons.AddActions(new ActionInfo(AddAction.ActionType, AddAction.Color, HostUpgrade));
                 if (HostShip.State != null)
                 {
                    GenericAction addedAction = (GenericAction)Activator.CreateInstance(AddAction.ActionType);
@@ -229,7 +232,11 @@ namespace Upgrade
         {
             if (AddAction != null)
             {
-                ActionInfo addedAction = HostShip.ShipInfo.ActionIcons.Actions.First(a => a.ActionType == AddAction.ActionType && a.Color == AddAction.Color);
+                ActionInfo addedAction = HostShip.ShipInfo.ActionIcons.Actions.First(a => 
+                    a.ActionType == AddAction.ActionType
+                    && a.Color == AddAction.Color
+                    && a.Source == HostUpgrade
+                );
                 HostShip.ShipInfo.ActionIcons.Actions.Remove(addedAction);
 
                 if (HostShip.State != null) HostUpgrade.HostShip.ActionBar.RemoveGrantedAction(AddAction.ActionType, HostUpgrade);

@@ -30,9 +30,9 @@ namespace UpgradesList.FirstEdition
         public override void ExplosionEffect(GenericShip ship, Action callBack)
         {
             Selection.ActiveShip = ship;
-            var sufferBombletDamageSubphase = Phases.StartTemporarySubPhaseNew("Damage from " + UpgradeInfo.Name, typeof(BombletCheckSubPhase), () =>
+            var sufferBombletDamageSubphase = Phases.StartTemporarySubPhaseNew("Damage from " + UpgradeInfo.Name, typeof(SubPhases.FirstEdition.BombletCheckSubPhase), () =>
             {
-                Phases.FinishSubPhase(typeof(BombletCheckSubPhase));
+                Phases.FinishSubPhase(typeof(SubPhases.FirstEdition.BombletCheckSubPhase));
                 callBack();
             });
             sufferBombletDamageSubphase.Start();
@@ -52,7 +52,7 @@ namespace UpgradesList.FirstEdition
 
 }
 
-namespace SubPhases
+namespace SubPhases.FirstEdition
 {
     public class BombletCheckSubPhase : DiceRollCheckSubPhase
     {

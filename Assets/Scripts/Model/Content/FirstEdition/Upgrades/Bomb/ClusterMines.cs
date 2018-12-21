@@ -9,7 +9,7 @@ using SubPhases;
 
 namespace UpgradesList.FirstEdition
 {
-    public class ClusterMines : GenericContactMine
+    public class ClusterMines : GenericContactMineFE
     {
         public ClusterMines() : base()
         {

@@ -99,6 +99,11 @@ namespace Ship
             return AvailableActionsList;
         }
 
+        public List<GenericAction> GetAvailableActionsWhiteOnly()
+        {
+            return GetAvailableActions().Where(a => !a.IsRed).ToList();
+        }
+
         public List<GenericAction> GetAvailableActionsAsRed()
         {
             List<GenericAction> redActions = new List<GenericAction>();
@@ -106,6 +111,22 @@ namespace Ship
             GenerateAvailableActionsList();
 
             foreach(GenericAction action in AvailableActionsList)
+            {
+                GenericAction instance = (GenericAction)Activator.CreateInstance(action.GetType());
+                instance.IsRed = true;
+                redActions.Add(instance);
+            }
+
+            return redActions;
+        }
+
+        public List<GenericAction> GetAvailableActionsWhiteOnlyAsRed()
+        {
+            List<GenericAction> redActions = new List<GenericAction>();
+
+            GenerateAvailableActionsList();
+
+            foreach (GenericAction action in AvailableActionsList.Where(n => !n.IsRed))
             {
                 GenericAction instance = (GenericAction)Activator.CreateInstance(action.GetType());
                 instance.IsRed = true;
